@@ -14,5 +14,5 @@ const CodeBlockSchema = new mongoose.Schema<ICodeBlock>({
   solution: { type: String, required: true },
 });
 
-const CodeBlock = mongoose.model<ICodeBlock>("codeBlock", CodeBlockSchema);
+const CodeBlock = mongoose.model<ICodeBlock>("codeblock", CodeBlockSchema, "codeblocks");
 export default CodeBlock;
