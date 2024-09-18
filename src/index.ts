@@ -6,7 +6,6 @@ import http from "http";
 import connectDB from "./config/DBConnection";
 import codeBlockRouter from "./routes/codeBlock.routes";
 import createSocketServer from "./socket";
-import { serverLink } from "./constants/frontendLinks";
 
 dotenv.config();
 
