@@ -38,5 +38,4 @@ httpServer.listen(port, () => {
   } catch (error) {
     console.log("[server]: connection failed to MongoDB");
   }
-  console.log(`Server is running at http://localhost:${port}`);
 });

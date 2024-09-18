@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import CodeBlockService from "../models/CodeBlock.model";
 
 const getAllCodeBlocks = async () => {
