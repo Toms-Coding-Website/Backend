@@ -16,8 +16,6 @@ const createSocketServer = (server: HTTPServer) => {
   } = {};
 
   io.on("connection", (socket) => {
-    console.log(`New user connected: ${socket.id}`);
-
     // Handle joining a room
     socket.on("joinRoom", ({ roomId }) => {
       socket.join(roomId);
@@ -40,7 +38,6 @@ const createSocketServer = (server: HTTPServer) => {
 
       // Emit role assignment to the new user
       socket.emit("roleAssigned", role);
-      console.log(`${role} joined room ${roomId}`);
 
       // Notify all users in the room about the updated status
       io.to(roomId).emit("updateRoomStatus", {
@@ -50,13 +47,21 @@ const createSocketServer = (server: HTTPServer) => {
 
       // Handle live code changes (from the student)
       socket.on("codeChange", (code) => {
-        // Broadcast code changes to all users in the room, including the mentor
         io.to(roomId).emit("codeChange", code);
+      });
+
+      // Handle code submission (from the student)
+      socket.on("submissionResult", (isCorrect: boolean) => {
+        const roomId = Array.from(socket.rooms).find(
+          (room) => room !== socket.id
+        );
+        if (roomId) {
+          io.to(roomId).emit("submissionResult", isCorrect);
+        }
       });
 
       // Handle disconnect
       socket.on("disconnect", () => {
-        console.log(`User disconnected: ${socket.id}`);
         socket.leave(roomId);
 
         // Check if the disconnected user is the mentor
