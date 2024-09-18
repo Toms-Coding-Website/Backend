@@ -2,25 +2,38 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
+import http from "http";
 import connectDB from "./config/DBConnection";
 import codeBlockRouter from "./routes/codeBlock.routes";
-import CodeBlock from "./models/CodeBlock.model";
+import createSocketServer from "./socket";
+import { serverLink } from "./constants/frontendLinks";
 
 dotenv.config();
 
 const port = process.env.PORT || 3000;
 const app: Express = express();
+
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
+// Routes
 app.use("/code-block", codeBlockRouter);
 
+// Base test route
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
-app.listen(port, () => {
+// Create an HTTP server to use with Socket.IO
+const httpServer = http.createServer(app);
+
+// Initialize Socket.IO
+const io = createSocketServer(httpServer);
+
+// Start the server
+httpServer.listen(port, () => {
   try {
     connectDB();
   } catch (error) {

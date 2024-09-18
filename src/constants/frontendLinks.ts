@@ -1,0 +1,1 @@
+export const serverLink: string = "http://localhost:5173";
