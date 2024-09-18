@@ -1,1 +1,1 @@
-export const serverLink: string = "http://localhost:5173";
+export const serverLink: string = "https://frontend-f9ch.onrender.com";
