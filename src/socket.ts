@@ -52,8 +52,8 @@ const createSocketServer = (server: HTTPServer) => {
       const { mentorId, studentCount } = roomUserCounts[roomId];
       io.to(roomId).emit("updateRoomStatus", { mentorId, studentCount });
 
-      socket.on("codeChange", (code) => {
-        io.to(roomId).emit("codeChange", code);
+      socket.on("codeChange", ({ code, userId }) => {
+        socket.to(roomId).emit("codeChange", { code, userId });
       });
 
       socket.on("submissionResult", (isCorrect: boolean) => {
